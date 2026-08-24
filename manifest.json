@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "id": "iaeluk.omastatus",
+  "name": "OmaStatus",
+  "version": "1.0.0",
+  "author": "iaeluk",
+  "description": "Monitor de sistema para Omarchy. Temperatura, CPU, mem\u00f3ria, rede, disco, bateria e GPU na top bar, totalmente configur\u00e1vel. Suporte a 5 idiomas, larguras fixas e ordena\u00e7\u00e3o dos pinados.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "OmaStatus",
+    "description": "Temperatura, CPU, mem\u00f3ria, rede, disco, bateria e GPU com layout configur\u00e1vel",
+    "category": "System",
+    "allowMultiple": false,
+    "schema": [
+      {
+        "key": "hotSensors",
+        "type": "stringList",
+        "label": "Sensores na barra (hot-sensors)",
+        "description": "Lista de sensores vis\u00edveis na barra. Use _grupo_label_ (ex: _memory_usage_, _system_load_1m_, __network-rx_max__). Deixe vazio para usar o padr\u00e3o.",
+        "defaultValue": [
+          "_memory_usage_",
+          "_system_load_1m_",
+          "__network-rx_max__"
+        ],
+        "maxItems": 20
+      },
+      {
+        "key": "updateTime",
+        "type": "integer",
+        "label": "Intervalo (segundos)",
+        "description": "Segundos entre polls",
+        "defaultValue": 2,
+        "min": 1,
+        "max": 60
+      },
+      {
+        "key": "positionInPanel",
+        "type": "select",
+        "label": "Posi\u00e7\u00e3o na barra",
+        "description": "Onde o widget aparece. Mova tamb\u00e9m com: omarchy bar move iaeluk.omastatus --section left|center|right",
+        "defaultValue": "right",
+        "options": [
+          {
+            "value": "left",
+            "label": "Esquerda"
+          },
+          {
+            "value": "center",
+            "label": "Centro"
+          },
+          {
+            "value": "right",
+            "label": "Direita"
+          }
+        ]
+      },
+      {
+        "key": "useHigherPrecision",
+        "type": "boolean",
+        "label": "Alta precis\u00e3o",
+        "description": "Uma casa decimal extra",
+        "defaultValue": false
+      },
+      {
+        "key": "alphabetize",
+        "type": "boolean",
+        "label": "Ordem alfab\u00e9tica",
+        "description": "Ordena sensores no dropdown",
+        "defaultValue": true
+      },
+      {
+        "key": "hideZeros",
+        "type": "boolean",
+        "label": "Esconder zeros",
+        "description": "Esconde sensores com valor 0/inv\u00e1lido",
+        "defaultValue": false
+      },
+      {
+        "key": "hideIcons",
+        "type": "boolean",
+        "label": "Esconder \u00edcones na barra",
+        "description": "Mostra s\u00f3 valores na top bar",
+        "defaultValue": false
+      },
+      {
+        "key": "fixedWidths",
+        "type": "boolean",
+        "label": "Larguras fixas",
+        "description": "Evita que sensores pulem na barra",
+        "defaultValue": true
+      },
+      {
+        "key": "unit",
+        "type": "select",
+        "label": "Unidade temperatura",
+        "description": "Celsius ou Fahrenheit",
+        "defaultValue": 0,
+        "options": [
+          {
+            "value": 0,
+            "label": "Celsius"
+          },
+          {
+            "value": 1,
+            "label": "Fahrenheit"
+          }
+        ]
+      },
+      {
+        "key": "showTemperature",
+        "type": "boolean",
+        "label": "Mostrar temperatura",
+        "defaultValue": true
+      },
+      {
+        "key": "showVoltage",
+        "type": "boolean",
+        "label": "Mostrar voltagem",
+        "defaultValue": false
+      },
+      {
+        "key": "showFan",
+        "type": "boolean",
+        "label": "Mostrar ventoinhas",
+        "defaultValue": true
+      },
+      {
+        "key": "showMemory",
+        "type": "boolean",
+        "label": "Mostrar mem\u00f3ria",
+        "defaultValue": true
+      },
+      {
+        "key": "showProcessor",
+        "type": "boolean",
+        "label": "Mostrar processador",
+        "defaultValue": true
+      },
+      {
+        "key": "showSystem",
+        "type": "boolean",
+        "label": "Mostrar sistema",
+        "defaultValue": true
+      },
+      {
+        "key": "showNetwork",
+        "type": "boolean",
+        "label": "Mostrar rede",
+        "defaultValue": true
+      },
+      {
+        "key": "showStorage",
+        "type": "boolean",
+        "label": "Mostrar armazenamento",
+        "defaultValue": true
+      },
+      {
+        "key": "showBattery",
+        "type": "boolean",
+        "label": "Mostrar bateria",
+        "defaultValue": false
+      },
+      {
+        "key": "showGpu",
+        "type": "boolean",
+        "label": "Mostrar GPU",
+        "description": "Requer nvidia-smi (NVIDIA) ou /sys/class/drm (AMD/Intel)",
+        "defaultValue": false
+      },
+      {
+        "key": "includePublicIp",
+        "type": "boolean",
+        "label": "Incluir IP p\u00fablico (rede)",
+        "defaultValue": true
+      },
+      {
+        "key": "networkPublicIpInterval",
+        "type": "integer",
+        "label": "Intervalo IP p\u00fablico (min)",
+        "defaultValue": 60,
+        "min": 1,
+        "max": 1440
+      },
+      {
+        "key": "networkSpeedFormat",
+        "type": "select",
+        "label": "Formato velocidade rede",
+        "defaultValue": 0,
+        "options": [
+          {
+            "value": 0,
+            "label": "Bytes/s"
+          },
+          {
+            "value": 1,
+            "label": "Bits/s"
+          }
+        ]
+      },
+      {
+        "key": "networkSpeedUnit",
+        "type": "select",
+        "label": "Unidade fixa rede",
+        "defaultValue": 0,
+        "options": [
+          {
+            "value": 0,
+            "label": "Auto"
+          },
+          {
+            "value": 1,
+            "label": "Kbps/KiB/s"
+          },
+          {
+            "value": 2,
+            "label": "Mbps/MiB/s"
+          }
+        ]
+      },
+      {
+        "key": "storagePath",
+        "type": "string",
+        "label": "Caminho armazenamento",
+        "defaultValue": "/"
+      },
+      {
+        "key": "memoryMeasurement",
+        "type": "select",
+        "label": "Medida mem\u00f3ria",
+        "defaultValue": 1,
+        "options": [
+          {
+            "value": 0,
+            "label": "GiB (1024)"
+          },
+          {
+            "value": 1,
+            "label": "GB (1000)"
+          }
+        ]
+      },
+      {
+        "key": "storageMeasurement",
+        "type": "select",
+        "label": "Medida armazenamento",
+        "defaultValue": 1,
+        "options": [
+          {
+            "value": 0,
+            "label": "GiB (1024)"
+          },
+          {
+            "value": 1,
+            "label": "GB (1000)"
+          }
+        ]
+      },
+      {
+        "key": "batterySlot",
+        "type": "integer",
+        "label": "Slot bateria",
+        "defaultValue": 0,
+        "min": 0,
+        "max": 7
+      },
+      {
+        "key": "monitorCmd",
+        "type": "string",
+        "label": "Comando monitor do sistema",
+        "defaultValue": "gnome-system-monitor"
+      },
+      {
+        "key": "includeStaticInfo",
+        "type": "boolean",
+        "label": "Info est\u00e1tica CPU",
+        "defaultValue": false
+      },
+      {
+        "key": "includeStaticGpuInfo",
+        "type": "boolean",
+        "label": "Info est\u00e1tica GPU",
+        "defaultValue": false
+      },
+      {
+        "key": "iconStyle",
+        "type": "select",
+        "label": "Estilo \u00edcones",
+        "defaultValue": 0,
+        "options": [
+          {
+            "value": 0,
+            "label": "Original"
+          },
+          {
+            "value": 1,
+            "label": "GNOME"
+          }
+        ]
+      }
+    ]
+  }
+}
