@@ -297,7 +297,7 @@ collect_gpu() {
         printf '{"label":"Vendor","value":"AMD","type":"%s","format":"string"}\n' "$g"
       fi
       for key in "mem_info_vram_used:Memory Used" "mem_info_vram_total:Memory Total"; do
-        k=${key%%:*}; l=${key
+        k=${key%%:*}; l=${key#*:}
         f="/sys/class/drm/card$i/device/$k"
         [ -f "$f" ] || continue
         v=$(cat "$f" 2>/dev/null) && printf '{"label":"%s","value":%s,"type":"%s","format":"memory"}\n' "$l" "$v" "$g"
