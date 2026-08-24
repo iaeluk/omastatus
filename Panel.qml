@@ -34,7 +34,7 @@ Panel {
   readonly property bool showNetwork: setting("showNetwork", true) !== false
   readonly property bool showStorage: setting("showStorage", true) !== false
   readonly property bool showBattery: setting("showBattery", false) === true
-  readonly property bool showGpu: setting("showGpu", false) === true
+  readonly property bool showGpu: setting("showGpu", true) !== false
   readonly property string storagePath: String(setting("storagePath", "/") || "/")
   readonly property int memoryMeasurement: Number(setting("memoryMeasurement", 1)) || 1
   readonly property int storageMeasurement: Number(setting("storageMeasurement", 1)) || 1
@@ -526,7 +526,7 @@ Panel {
                 spacing: Style.space(4)
                 Text { text: (index+1) + "."; color: Qt.darker(root.bar.foreground,1.2); font.family: root.bar.fontFamily; font.pixelSize: Style.font.caption; width: Style.space(16); horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter }
                 Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? entry.icon : "●"; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.caption; width: Style.space(16); horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter }
-                Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? entry.label : skey; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.body; width: parent.width - Style.space(16) - Style.space(16) - 70; anchors.verticalCenter: parent.verticalCenter }
+                Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? I18n.sensorLabel(entry.label) : skey; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.body; width: parent.width - Style.space(16) - Style.space(16) - 70; anchors.verticalCenter: parent.verticalCenter }
                 Button {
                   text: "↑"
                   enabled: index > 0
@@ -704,7 +704,7 @@ Panel {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Style.space(8)
                     Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? entry.icon : "●"; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.body; width: Style.space(18); horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter }
-                    Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? entry.label : skey; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.body; width: parent.width - Style.space(18) - Style.space(8) - valueText.width - Style.space(8); anchors.verticalCenter: parent.verticalCenter }
+                    Text { textFormat: Text.PlainText; maximumLineCount: 1; elide: Text.ElideRight; wrapMode: Text.NoWrap; text: entry ? I18n.sensorLabel(entry.label) : skey; color: root.bar.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.body; width: parent.width - Style.space(18) - Style.space(8) - valueText.width - Style.space(8); anchors.verticalCenter: parent.verticalCenter }
                     Text {
                       id: valueText
                       textFormat: Text.PlainText

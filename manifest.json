@@ -170,7 +170,7 @@
         "type": "boolean",
         "label": "Mostrar GPU",
         "description": "Requer nvidia-smi (NVIDIA) ou /sys/class/drm (AMD/Intel)",
-        "defaultValue": false
+        "defaultValue": true
       },
       {
         "key": "includePublicIp",
