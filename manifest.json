@@ -24,7 +24,7 @@
         "description": "Lista de sensores vis\u00edveis na barra. Use _grupo_label_ (ex: _memory_usage_, _system_load_1m_, __network-rx_max__). Deixe vazio para usar o padr\u00e3o.",
         "defaultValue": [
           "_memory_usage_",
-          "_system_load_1m_",
+          "_processor_usage_",
           "__network-rx_max__"
         ],
         "maxItems": 20

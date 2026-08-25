@@ -14,9 +14,10 @@ Panel {
   ipcTarget: "iaeluk.omastatus"
 
   readonly property var hotSensors: {
-    let v = setting("hotSensors", ["_memory_usage_", "_system_load_1m_", "__network-rx_max__"])
+    settings
+    let v = setting("hotSensors", ["_memory_usage_", "_processor_usage_", "__network-rx_max__"])
     if (Array.isArray(v) && v.length>0) return v.slice(0,20)
-    return ["_memory_usage_", "_system_load_1m_", "__network-rx_max__"]
+    return ["_memory_usage_", "_processor_usage_", "__network-rx_max__"]
   }
   readonly property int updateTime: Math.max(1, Number(setting("updateTime", 2)) || 2)
   readonly property bool useHigherPrecision: setting("useHigherPrecision", false) === true
