@@ -13,11 +13,14 @@ Panel {
   moduleName: "iaeluk.omastatus"
   ipcTarget: "iaeluk.omastatus"
 
-  readonly property var hotSensors: {
-    settings
-    let v = setting("hotSensors", ["_memory_usage_", "_processor_usage_", "__network-rx_max__"])
-    if (Array.isArray(v) && v.length>0) return v.slice(0,20)
-    return ["_memory_usage_", "_processor_usage_", "__network-rx_max__"]
+  property var hotSensors: ["_memory_usage_", "_processor_usage_", "__network-rx_max__"]
+
+  function syncHotSensors() {
+    const dflt = ["_memory_usage_", "_processor_usage_", "__network-rx_max__"]
+    let v = setting("hotSensors", dflt)
+    let arr
+    try { arr = Array.from(v) } catch(e) { arr = null }
+    hotSensors = (arr && arr.length > 0) ? arr.slice(0, 20) : dflt
   }
   readonly property int updateTime: Math.max(1, Number(setting("updateTime", 2)) || 2)
   readonly property bool useHigherPrecision: setting("useHigherPrecision", false) === true
@@ -316,7 +319,13 @@ Panel {
     updateHotMap()
   }
 
+  onSettingsChanged: {
+    syncHotSensors()
+    refresh()
+  }
+
   Component.onCompleted: {
+    syncHotSensors()
     refresh()
   }
 
@@ -345,8 +354,13 @@ Panel {
     }
   }
 
-  function barText(){
-    if(root.hotSensors.length===0 || (root.hotSensors.length===1 && root.hotSensors[0]==="_default_icon_")) return ""
+  property string displayText: {
+    root.hotSensors; root.hotMap; root.sensorMap; root.hideIcons
+    return root.computeBarText()
+  }
+
+  function computeBarText(){
+    if(root.hotSensors.length===0 || (root.hotSensors.length===1 && root.hotSensors[0]==="_default_icon_")) return ""
     let parts=[]
     for(let k of root.hotSensors){
       let v=root.hotMap[k]
@@ -355,23 +369,24 @@ Panel {
       let icon=""
       if(!root.hideIcons){
         if(entry && entry.icon) icon=entry.icon+" "
-        else if(k.includes("memory")) icon=" "
-        else if(k.includes("system")) icon=" "
+        else if(k.includes("memory")) icon=" "
+        else if(k.includes("system")) icon=" "
         else if(k.includes("storage")) icon="󰋊 "
-        else if(k.includes("network")) icon=" "
-        else if(k.includes("temperature")) icon=" "
-        else if(k.includes("processor")) icon=" "
+        else if(k.includes("network")) icon=" "
+        else if(k.includes("temperature")) icon=" "
+        else if(k.includes("processor")) icon=" "
         else icon="● "
       }
       parts.push(icon+v)
     }
-    return parts.join("  ")
+    const result = parts.join("  ")
+    return result
   }
 
   Text {
     id: measureText
     visible: false
-    text: root.barText()
+    text: root.displayText
     font.family: root.bar ? root.bar.fontFamily : Style.font.family
     font.pixelSize: Style.font.body
     onImplicitWidthChanged: {
@@ -393,7 +408,7 @@ Panel {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: root.barText()
+    text: root.displayText
     fontSize: Style.font.body
     horizontalMargin: 6
     verticalPadding: 6
